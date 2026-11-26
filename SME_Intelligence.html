@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SME Intelligence</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--text:#151d33;--mut:#64748b;--line:#e4e8f0;--pri:#4f46e5;--pri2:#6366f1;--soft:#eef2ff;--ok:#059669;--warn:#d97706;--bad:#dc2626;--side:#0f1630;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1020;--card:#141b30;--text:#e8ecf7;--mut:#94a3c0;--line:#243050;--soft:#1e2748;--side:#0a0f20}}
+:root[data-theme="dark"]{--bg:#0b1020;--card:#141b30;--text:#e8ecf7;--mut:#94a3c0;--line:#243050;--soft:#1e2748;--side:#0a0f20}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI","Noto Sans","Noto Sans Devanagari","Noto Sans Bengali",Roboto,Arial,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:30}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer;border:0}
+.side{position:fixed;left:0;top:0;bottom:0;width:230px;background:var(--side);color:#fff;padding:calc(18px + env(safe-area-inset-top,0px)) 12px 18px;z-index:40;transition:.2s}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px 20px;font-weight:800}.logo{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#818cf8,#4f46e5);display:grid;place-items:center}
+.nav button{display:flex;gap:11px;align-items:center;width:100%;background:none;color:#aeb9d6;padding:11px 12px;border-radius:11px;margin-bottom:3px;text-align:left}.nav button.on,.nav button:hover{background:rgba(255,255,255,.1);color:#fff}
+.main{margin-left:230px}.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:31;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:10px 24px;min-height:62px}
+.top h2{margin:0;font-size:18px;flex:1}.menu{display:none;background:var(--soft);border-radius:9px;padding:8px 11px}
+.sel,.top input{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.ico{background:var(--soft);border-radius:10px;padding:8px 11px}
+.wrap{padding:22px 24px 60px;max-width:1300px;margin:auto}.page{display:none}.page.on{display:block}
+.hero{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}.hero p{margin:0;color:var(--mut)}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{padding:10px 15px;border-radius:11px;font-weight:700;background:var(--soft);color:var(--pri)}.btn.p{background:var(--pri);color:#fff}.btn.d{background:#fee2e2;color:#991b1b}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.g2{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-top:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}.card h3{margin:0 0 12px;font-size:15px}
+.kpi small{color:var(--mut)}.kpi b{display:block;font-size:24px;margin-top:4px}
+.chart{position:relative;height:250px}canvas{width:100%;height:100%}.tip{position:absolute;pointer-events:none;background:var(--text);color:var(--bg);padding:4px 8px;border-radius:7px;font-size:12px;display:none;white-space:nowrap}
+.bar{height:8px;background:var(--soft);border-radius:9px;margin:5px 0 13px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pri2),#a78bfa);border-radius:9px}
+.tw{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:560px}th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;white-space:nowrap}th{background:var(--soft);color:var(--mut)}tr:last-child td{border:0}
+.badge{padding:3px 9px;border-radius:99px;font-size:11px;font-weight:700;background:#dcfce7;color:#166534}.badge.w{background:#fef3c7;color:#92400e}.badge.b{background:#fee2e2;color:#991b1b}
+.ins{border-left:4px solid var(--pri);background:var(--soft);padding:10px 13px;border-radius:10px;margin-bottom:9px}.ins span{display:block;color:var(--mut);font-size:13px}
+.empty{text-align:center;color:var(--mut);padding:36px 12px}.drop{border:2px dashed var(--line);border-radius:16px;padding:34px 16px;text-align:center;cursor:pointer}.drop.dg{border-color:var(--pri);background:var(--soft)}
+.chat{display:flex;flex-direction:column;height:min(460px,60vh)}.msgs{flex:1;overflow:auto}.m{max-width:80%;padding:9px 13px;border-radius:14px;margin:7px 0;background:var(--soft)}.m.me{background:var(--pri);color:#fff;margin-left:auto}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.chip{background:var(--soft);color:var(--pri);padding:7px 12px;border-radius:99px;font-size:13px}
+.bar2{display:flex;gap:8px}.bar2 input,.f input{flex:1;padding:11px;border:1px solid var(--line);border-radius:11px;background:var(--card)}.f{display:grid;gap:6px;margin-bottom:14px;max-width:420px}.f label{font-weight:700;font-size:13px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--text);color:var(--bg);padding:11px 18px;border-radius:12px;z-index:99;display:none}
+@media(max-width:1000px){.cards{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}}
+@media(max-width:760px){.side{transform:translateX(-100%)}.side.open{transform:none}.main{margin-left:0}.menu{display:block}.top{padding:8px 12px}.wrap{padding:16px 12px 60px}.kpi b{font-size:20px}}
+</style>
+</head>
+<body>
+<aside class="side" id="side"><div class="brand"><div class="logo">📈</div>SME Intelligence</div><nav class="nav" id="nav"></nav></aside>
+<div class="main">
+<header class="top"><button class="menu" id="menu">☰</button><h2 id="ttl"></h2>
+<select class="sel" id="lang"><option value="en">English</option><option value="hi">हिन्दी</option><option value="mr">मराठी</option><option value="bn">বাংলা</option></select>
+<button class="ico" id="themeBtn" title="Theme">🌓</button></header>
+<div class="wrap">
+
+<section class="page" id="p-dash">
+ <div class="hero"><p data-i="sub"></p><div class="row"><select class="sel" id="range"><option value="all" data-i="r_all"></option><option value="7" data-i="r7"></option><option value="30" data-i="r30"></option></select><button class="btn" data-i="sample" onclick="loadSample()"></button><button class="btn p" data-i="up_csv" onclick="go('upload')"></button></div></div>
+ <div class="cards" id="kpis"></div>
+ <div class="g2"><div class="card"><h3 data-i="trend"></h3><div class="chart"><canvas id="cv"></canvas><div class="tip" id="tip"></div></div></div><div class="card"><h3 data-i="top"></h3><div id="top"></div></div></div>
+ <div class="g2"><div class="card"><h3 data-i="prodh"></h3><div id="perf"></div></div><div class="card"><h3 data-i="ins"></h3><div id="ins"></div></div></div>
+</section>
+
+<section class="page" id="p-upload">
+ <div class="card"><div class="drop" id="drop" onclick="csv.click()"><div style="font-size:34px">📄</div><h3 data-i="drop"></h3><p data-i="browse" style="color:var(--mut)"></p><input id="csv" type="file" hidden></div><div id="prev" style="margin-top:14px"></div></div>
+ <div class="card" style="margin-top:14px"><p data-i="cols" style="color:var(--mut)"></p><div class="row"><button class="btn" data-i="dl" onclick="dlSample()"></button><button class="btn" data-i="sample" onclick="loadSample()"></button></div></div>
+ <div class="card" style="margin-top:14px"><h3 data-i="hist"></h3><div id="hist"></div></div>
+</section>
+
+<section class="page" id="p-data"><div class="card"><div class="row" style="justify-content:space-between;margin-bottom:12px"><input class="sel" id="q" data-ph="search" style="flex:1;min-width:200px"><span id="cnt" style="color:var(--mut)"></span><button class="btn" data-i="exp" onclick="exportCSV()"></button></div><div id="tbl"></div></div></section>
+<section class="page" id="p-prod"><div class="card" id="ptbl"></div></section>
+<section class="page" id="p-stock"><div class="card" id="stk"></div></section>
+
+<section class="page" id="p-ask"><div class="card chat"><div class="msgs" id="msgs"></div><div class="chips" id="chips"></div><div class="bar2"><input id="qi" data-ph="ph"><button class="btn p" data-i="send" onclick="ask()"></button></div></div></section>
+
+<section class="page" id="p-set"><div class="card">
+ <div class="f"><label data-i="bizname"></label><input id="biz"></div>
+ <div class="f"><label data-i="thr"></label><input id="thr" type="number" min="0"></div>
+ <button class="btn p" data-i="save" onclick="saveSet()"></button>
+ <hr style="border:0;border-top:1px solid var(--line);margin:20px 0"><button class="btn d" data-i="clear" onclick="clearAll()"></button></div></section>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const L={
+en:{dash:'Dashboard',upload:'Upload',data:'Data',prod:'Products',stock:'Stock',ask:'Assistant',set:'Settings',sub:'Turn your sales data into clear decisions.',rev:'Revenue',units:'Units sold',profit:'Gross profit',margin:'Margin',nocost:'Cost data missing',r_all:'All data',r7:'Last 7 days',r30:'Last 30 days',trend:'Revenue trend',top:'Top products',prodh:'Product performance',ins:'Insights',sample:'Load sample data',up_csv:'Upload file',drop:'Drop your file here (CSV, Excel, JSON…)',browse:'or tap to choose a file',valid:'valid',invalid:'invalid',confirm:'Confirm import',cancel:'Cancel',done:'{0} rows imported',search:'Search product, SKU, category…',rows:'{0} of {1} rows',date:'Date',product:'Product',sku:'SKU',cat:'Category',qty:'Qty',cost:'Cost',low:'Low stock',ok:'Healthy',nodata:'No data yet — load sample data or upload a CSV.',ph:'e.g. Which product earns the most?',send:'Ask',hist:'Import history',clear:'Clear all data',clearq:'Delete all local data?',bizname:'Business name',save:'Save',saved:'Saved',thr:'Low-stock limit',dl:'Sample CSV',exp:'Export CSV',nostock:'Stock data was not supplied.',stk:'Latest stock',file:'File',a_top:'{0} earns the most: {1}.',a_p:'Gross profit is {0}, margin {1}%.',a_np:'Profit can’t be calculated — cost data is missing.',a_u:'Total units sold: {0}.',a_l:'Low stock: {0}.',a_n:'Nothing is low on stock.',a_d:'Ask about revenue, top products, profit, units or low stock.',a_hi:'Hi! Tap a question below or type your own.',i_t:'{0} brings the most revenue',i_t2:'{0} in the selected period.',i_m:'Gross margin is {0}%',i_m2:'Gross profit ÷ revenue.',i_n:'Profit analysis unavailable',i_n2:'Some rows have no cost.',i_l:'{0} needs restocking',i_l2:'Only {0} left.',c1:'Top product?',c2:'Profit?',c3:'Units sold?',c4:'Low stock?',cols:'Required: product + sales (or qty × price). Optional: SKU, category, date, cost, stock.',inv:'invalid rows are skipped'},
+hi:{dash:'डैशबोर्ड',upload:'अपलोड',data:'डेटा',prod:'प्रोडक्ट',stock:'स्टॉक',ask:'असिस्टेंट',set:'सेटिंग्स',sub:'अपने बिक्री डेटा से सही फैसले लें।',rev:'कमाई',units:'बिके यूनिट',profit:'सकल मुनाफा',margin:'मार्जिन',nocost:'लागत का डेटा नहीं है',r_all:'सारा डेटा',r7:'पिछले 7 दिन',r30:'पिछले 30 दिन',trend:'कमाई का ट्रेंड',top:'टॉप प्रोडक्ट',prodh:'प्रोडक्ट का प्रदर्शन',ins:'इनसाइट्स',sample:'सैंपल डेटा लोड करें',up_csv:'फ़ाइल अपलोड करें',drop:'अपनी फ़ाइल यहाँ छोड़ें (CSV, Excel…)',browse:'या फ़ाइल चुनने के लिए टैप करें',valid:'सही',invalid:'गलत',confirm:'इम्पोर्ट पक्का करें',cancel:'रद्द करें',done:'{0} पंक्तियाँ इम्पोर्ट हुईं',search:'प्रोडक्ट, SKU, कैटेगरी खोजें…',rows:'{1} में से {0} पंक्तियाँ',date:'तारीख',product:'प्रोडक्ट',sku:'SKU',cat:'कैटेगरी',qty:'मात्रा',cost:'लागत',low:'स्टॉक कम',ok:'ठीक',nodata:'अभी डेटा नहीं है — सैंपल डेटा लोड करें या CSV अपलोड करें।',ph:'जैसे: सबसे ज्यादा कमाई किस प्रोडक्ट से?',send:'पूछें',hist:'इम्पोर्ट हिस्ट्री',clear:'सारा डेटा हटाएँ',clearq:'सारा लोकल डेटा हटाएँ?',bizname:'बिज़नेस का नाम',save:'सेव करें',saved:'सेव हो गया',thr:'कम स्टॉक की सीमा',dl:'सैंपल CSV',exp:'CSV निर्यात',nostock:'स्टॉक का डेटा नहीं दिया गया।',stk:'ताज़ा स्टॉक',file:'फ़ाइल',a_top:'{0} से सबसे ज्यादा कमाई: {1}।',a_p:'सकल मुनाफा {0} है, मार्जिन {1}%।',a_np:'मुनाफा नहीं निकाल सकते — लागत का डेटा नहीं है।',a_u:'कुल बिके यूनिट: {0}।',a_l:'स्टॉक कम: {0}।',a_n:'कोई भी स्टॉक कम नहीं है।',a_d:'कमाई, टॉप प्रोडक्ट, मुनाफा, यूनिट या कम स्टॉक के बारे में पूछें।',a_hi:'नमस्ते! नीचे का सवाल चुनें या अपना सवाल लिखें।',i_t:'{0} से सबसे ज्यादा कमाई',i_t2:'चुनी अवधि में {0}।',i_m:'सकल मार्जिन {0}% है',i_m2:'सकल मुनाफा ÷ कमाई।',i_n:'मुनाफे का विश्लेषण संभव नहीं',i_n2:'कुछ पंक्तियों में लागत नहीं है।',i_l:'{0} का स्टॉक मँगाएँ',i_l2:'सिर्फ़ {0} बचे हैं।',c1:'टॉप प्रोडक्ट कौन सा?',c2:'मुनाफा कितना?',c3:'कितने यूनिट बिके?',c4:'कौन सा स्टॉक कम है?',cols:'ज़रूरी: प्रोडक्ट + बिक्री (या मात्रा × कीमत)। वैकल्पिक: SKU, कैटेगरी, तारीख, लागत, स्टॉक।'},
+mr:{dash:'डॅशबोर्ड',upload:'अपलोड',data:'डेटा',prod:'प्रोडक्ट्स',stock:'साठा',ask:'असिस्टंट',set:'सेटिंग्ज',sub:'तुमच्या विक्री डेटावरून योग्य निर्णय घ्या.',rev:'उत्पन्न',units:'विकलेले युनिट',profit:'एकूण नफा',margin:'मार्जिन',nocost:'खर्चाचा डेटा नाही',r_all:'सर्व डेटा',r7:'गेले 7 दिवस',r30:'गेले 30 दिवस',trend:'उत्पन्नाचा ट्रेंड',top:'टॉप प्रोडक्ट्स',prodh:'प्रोडक्ट कामगिरी',ins:'इनसाइट्स',sample:'सॅम्पल डेटा लोड करा',up_csv:'फाइल अपलोड करा',drop:'तुमची फाइल इथे टाका (CSV, Excel…)',browse:'किंवा फाइल निवडण्यासाठी टॅप करा',valid:'योग्य',invalid:'चुकीचे',confirm:'इम्पोर्ट निश्चित करा',cancel:'रद्द करा',done:'{0} ओळी इम्पोर्ट झाल्या',search:'प्रोडक्ट, SKU, कॅटेगरी शोधा…',rows:'{1} पैकी {0} ओळी',date:'तारीख',product:'प्रोडक्ट',sku:'SKU',cat:'कॅटेगरी',qty:'संख्या',cost:'खर्च',low:'साठा कमी',ok:'ठीक',nodata:'अजून डेटा नाही — सॅम्पल डेटा लोड करा किंवा CSV अपलोड करा.',ph:'उदा. कोणत्या प्रोडक्टमधून सर्वाधिक कमाई?',send:'विचारा',hist:'इम्पोर्ट इतिहास',clear:'सर्व डेटा काढा',clearq:'सर्व लोकल डेटा काढायचा?',bizname:'व्यवसायाचे नाव',save:'सेव्ह करा',saved:'सेव्ह झाले',thr:'कमी साठ्याची मर्यादा',dl:'सॅम्पल CSV',exp:'CSV एक्सपोर्ट',nostock:'साठ्याचा डेटा दिलेला नाही.',stk:'ताजा साठा',file:'फाइल',a_top:'{0} मधून सर्वाधिक कमाई: {1}.',a_p:'एकूण नफा {0}, मार्जिन {1}%.',a_np:'नफा काढता येत नाही — खर्चाचा डेटा नाही.',a_u:'एकूण विकलेले युनिट: {0}.',a_l:'साठा कमी: {0}.',a_n:'कोणताही साठा कमी नाही.',a_d:'उत्पन्न, टॉप प्रोडक्ट, नफा, युनिट किंवा कमी साठ्याबद्दल विचारा.',a_hi:'नमस्कार! खालील प्रश्न निवडा किंवा स्वतः लिहा.',i_t:'{0} मधून सर्वाधिक कमाई',i_t2:'निवडलेल्या कालावधीत {0}.',i_m:'एकूण मार्जिन {0}% आहे',i_m2:'एकूण नफा ÷ उत्पन्न.',i_n:'नफ्याचे विश्लेषण शक्य नाही',i_n2:'काही ओळींमध्ये खर्च नाही.',i_l:'{0} चा साठा मागवा',i_l2:'फक्त {0} उरले.',c1:'टॉप प्रोडक्ट कोणते?',c2:'नफा किती?',c3:'किती युनिट विकले?',c4:'कोणता साठा कमी आहे?',cols:'आवश्यक: प्रोडक्ट + विक्री (किंवा संख्या × किंमत). ऐच्छिक: SKU, कॅटेगरी, तारीख, खर्च, साठा.'},
+bn:{dash:'ড্যাশবোর্ড',upload:'আপলোড',data:'ডেটা',prod:'পণ্য',stock:'স্টক',ask:'সহকারী',set:'সেটিংস',sub:'বিক্রির ডেটা থেকে সঠিক সিদ্ধান্ত নিন।',rev:'আয়',units:'বিক্রীত ইউনিট',profit:'মোট লাভ',margin:'মার্জিন',nocost:'খরচের ডেটা নেই',r_all:'সব ডেটা',r7:'গত ৭ দিন',r30:'গত ৩০ দিন',trend:'আয়ের ট্রেন্ড',top:'সেরা পণ্য',prodh:'পণ্যের পারফরম্যান্স',ins:'ইনসাইট',sample:'নমুনা ডেটা লোড করুন',up_csv:'ফাইল আপলোড করুন',drop:'এখানে ফাইল ফেলুন (CSV, Excel…)',browse:'অথবা ফাইল বাছতে ট্যাপ করুন',valid:'সঠিক',invalid:'ভুল',confirm:'ইমপোর্ট নিশ্চিত করুন',cancel:'বাতিল',done:'{0}টি সারি ইমপোর্ট হয়েছে',search:'পণ্য, SKU, ক্যাটেগরি খুঁজুন…',rows:'{1}টির মধ্যে {0}টি সারি',date:'তারিখ',product:'পণ্য',sku:'SKU',cat:'ক্যাটেগরি',qty:'পরিমাণ',cost:'খরচ',low:'স্টক কম',ok:'ঠিক আছে',nodata:'এখনো ডেটা নেই — নমুনা ডেটা লোড করুন বা CSV আপলোড করুন।',ph:'যেমন: কোন পণ্যে সবচেয়ে বেশি আয়?',send:'জিজ্ঞাসা',hist:'ইমপোর্টের ইতিহাস',clear:'সব ডেটা মুছুন',clearq:'সব লোকাল ডেটা মুছবেন?',bizname:'ব্যবসার নাম',save:'সেভ করুন',saved:'সেভ হয়েছে',thr:'কম স্টকের সীমা',dl:'নমুনা CSV',exp:'CSV এক্সপোর্ট',nostock:'স্টকের ডেটা দেওয়া হয়নি।',stk:'সর্বশেষ স্টক',file:'ফাইল',a_top:'{0} থেকে সবচেয়ে বেশি আয়: {1}।',a_p:'মোট লাভ {0}, মার্জিন {1}%।',a_np:'লাভ হিসাব করা যাচ্ছে না — খরচের ডেটা নেই।',a_u:'মোট বিক্রীত ইউনিট: {0}।',a_l:'স্টক কম: {0}।',a_n:'কোনো স্টক কম নেই।',a_d:'আয়, সেরা পণ্য, লাভ, ইউনিট বা কম স্টক সম্পর্কে জিজ্ঞাসা করুন।',a_hi:'নমস্কার! নিচের প্রশ্ন বেছে নিন বা নিজে লিখুন।',i_t:'{0} থেকে সবচেয়ে বেশি আয়',i_t2:'নির্বাচিত সময়ে {0}।',i_m:'মোট মার্জিন {0}%',i_m2:'মোট লাভ ÷ আয়।',i_n:'লাভের বিশ্লেষণ সম্ভব নয়',i_n2:'কিছু সারিতে খরচ নেই।',i_l:'{0} আবার আনুন',i_l2:'মাত্র {0} বাকি।',c1:'কোন পণ্য সেরা?',c2:'লাভ কত?',c3:'কত ইউনিট বিক্রি হয়েছে?',c4:'কোন স্টক কম?',cols:'আবশ্যক: পণ্য + বিক্রি (অথবা পরিমাণ × দাম)। ঐচ্ছিক: SKU, ক্যাটেগরি, তারিখ, খরচ, স্টক।'}};
+Object.assign(L.en,{status:'Status',rowsh:'Rows'});Object.assign(L.hi,{status:'स्थिति',rowsh:'पंक्तियाँ'});Object.assign(L.mr,{status:'स्थिती',rowsh:'ओळी'});Object.assign(L.bn,{status:'অবস্থা',rowsh:'সারি'});
+Object.assign(L.en,{price:'Price',map:'Match columns',none:'— none —',rowsin:'{0} rows found',mapwarn:'Pick the Product and Revenue (or Price) columns above.',badfile:'This file type can’t be analyzed. Save it as Excel (.xlsx) or CSV and try again.',noxlsx:'Excel reader could not load (check internet). Save as CSV instead.',nosave:'Imported, but browser storage is full — data will be lost on refresh.',a_rev:'Total revenue is {0} from {1} units.',a_worst:'{0} earns the least: {1}.',a_cat:'Best category: {0} ({1}).',a_nocat:'No category data in your file.'});
+const ls={g(k,d){try{let v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},s(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
+let lang=ls.g('lang','en'),theme=ls.g('theme',''),recs=ls.g('recs',[]),imps=ls.g('imps',[]),set=ls.g('set',{biz:'My Store',thr:5}),page='dash',pend=[];
+const t=(k,...a)=>{let s=L[lang]?.[k]??L.en[k]??k;a.forEach((v,i)=>s=s.replace('{'+i+'}',v));return s};
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=n=>Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2}),money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:0});
+const PAGES=[['dash','▦'],['upload','⇧'],['data','▤'],['prod','◈'],['stock','▣'],['ask','✦'],['set','⚙']];
+const CLEAN=s=>String(s??'').replace(/^\uFEFF/,'').trim().toLowerCase().replace(/[^a-z0-9\u0900-\u0DFF]+/g,'_').replace(/^_+|_+$/g,'');
+const AL={product:['product_name','product','item','item_name','item_description','description','particulars','goods','name','product_title','article'],sku:['sku','product_code','item_code','code','barcode'],cat:['category','product_category','group','department'],qty:['quantity','qty','units','units_sold','qty_sold','pcs','nos','sold_qty','quantity_sold'],price:['unit_price','price','selling_price','rate','mrp','sale_price'],sales:['sales_amount','sales','net_amount','revenue','amount','total','total_amount','net_sales','line_total','turnover','total_sales'],cost:['cost_amount','cost','purchase_cost','total_cost','cogs','purchase_price','cost_price','unit_cost'],date:['transaction_date','date','date_time','bill_date','invoice_date','order_date','sale_date'],stock:['stock_on_hand','stock','current_stock','closing_stock','balance','inventory','stock_qty','on_hand','available']};
+const ALN=Object.fromEntries(Object.entries(AL).map(([k,v])=>[k,v.map(CLEAN)]));
+const MF=[['product','product'],['sales','rev'],['qty','qty'],['price','price'],['cost','cost'],['stock','stk'],['date','date'],['sku','sku'],['cat','cat']];
+let raw=null,map={};
+function detect(h){let n=h.map(CLEAN),m={},u=new Set();
+for(let k in ALN){let i=n.findIndex((x,j)=>x&&!u.has(j)&&ALN[k].includes(x));m[k]=i;if(i>=0)u.add(i)}
+for(let k in ALN)if(m[k]<0){let i=n.findIndex((x,j)=>x&&!u.has(j)&&ALN[k].some(a=>a.length>4&&x.includes(a)));m[k]=i;if(i>=0)u.add(i)}
+m.n=Object.keys(ALN).filter(k=>m[k]>=0).length;return m}
+const toN=v=>{if(typeof v==='number')return v;let s=String(v??'').trim();if(!s)return NaN;let ng=/^\(.*\)$/.test(s);s=s.replace(/rs\.?|inr|[₹$€£]/gi,'').replace(/[^0-9.\-]/g,'');if(!/\d/.test(s))return NaN;let n=Number(s);return ng?-Math.abs(n):n};
+const p2=n=>String(n).padStart(2,'0'),isoL=d=>`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`;
+function toDate(v){if(v instanceof Date)return isNaN(v)?'':isoL(v);if(v===''||v==null)return'';let s=String(v).trim(),m;
+if(/^\d{5}(\.\d+)?$/.test(s)&&+s>20000&&+s<80000){let d=new Date(Math.round((+s-25569)*864e5));return `${d.getUTCFullYear()}-${p2(d.getUTCMonth()+1)}-${p2(d.getUTCDate())}`}
+if(m=s.match(/^(\d{4})(\d{2})(\d{2})$/))return `${m[1]}-${m[2]}-${m[3]}`;
+if(m=s.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/))return `${m[1]}-${p2(m[2])}-${p2(m[3])}`;
+if(m=s.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})/)){let a=+m[1],b=+m[2],y=m[3].length===2?'20'+m[3]:m[3];if(b>12&&a<=12)[a,b]=[b,a];return `${y}-${p2(b)}-${p2(a)}`}
+let d=new Date(s);return isNaN(d)?s:isoL(d)}
+
+function go(p){location.hash=p}
+function route(){let p=location.hash.slice(1);page=PAGES.some(x=>x[0]===p)?p:'dash';document.querySelectorAll('.page').forEach(e=>e.classList.toggle('on',e.id==='p-'+page));$('side').classList.remove('open');draw()}
+function applyLang(){document.documentElement.lang=lang;$('lang').value=lang;document.querySelectorAll('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));document.querySelectorAll('[data-ph]').forEach(e=>e.placeholder=t(e.dataset.ph));
+$('nav').innerHTML=PAGES.map(([k,i])=>`<button data-p="${k}" onclick="go('${k}')"><span>${i}</span>${t(k)}</button>`).join('');
+$('chips').innerHTML=['c1','c2','c3','c4'].map(k=>`<button class="chip" onclick="qi.value='${t(k)}';ask()">${t(k)}</button>`).join('');
+$('msgs').innerHTML=`<div class="m">${t('a_hi')}</div>`;$('biz').value=set.biz;$('thr').value=set.thr;draw()}
+function setTheme(v){theme=v;if(v)document.documentElement.dataset.theme=v;else delete document.documentElement.dataset.theme;ls.s('theme',v)}
+
+function view(){let r=recs,n=$('range').value;if(n!=='all'){let k=new Set([...new Set(r.map(x=>x.date).filter(Boolean))].sort().slice(-n));r=r.filter(x=>k.has(x.date))}return r}
+function agg(r){let m={};r.forEach(x=>{let k=x.product||'?',o=m[k]||(m[k]={product:k,qty:0,rev:0,cost:0,ck:true});o.qty+=x.qty;o.rev+=x.sales;x.cost===null?o.ck=false:o.cost+=x.cost});return Object.values(m).map(o=>({...o,profit:o.ck?o.rev-o.cost:null})).sort((a,b)=>b.rev-a.rev)}
+function totals(r){let rev=r.reduce((s,x)=>s+x.sales,0),u=r.reduce((s,x)=>s+x.qty,0),ck=r.length&&r.every(x=>x.cost!==null),p=ck?rev-r.reduce((s,x)=>s+x.cost,0):null;return{rev,u,p,m:p===null||!rev?null:p/rev*100}}
+function lowList(){let m={};recs.forEach(x=>{if(x.stock!==null){let o=m[x.product];if(!o||(x.date||'')>=o.d)m[x.product]={s:x.stock,d:x.date||''}}});return Object.entries(m).map(([p,o])=>({p,s:o.s})).sort((a,b)=>a.s-b.s)}
+const empty=()=>`<div class="empty">${t('nodata')}</div>`;
+const tbl=(h,rows)=>`<div class="tw"><table><thead><tr>${h.map(x=>`<th>${t(x)}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
+
+function draw(){document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===page));$('ttl').textContent=page==='dash'?set.biz:t(page);
+let r=view(),T=totals(r),A=agg(r);
+$('kpis').innerHTML=[['rev',money(T.rev)],['units',num(T.u)],['profit',T.p===null?'—':money(T.p)],['margin',T.m===null?'—':T.m.toFixed(1)+'%']].map(([k,v])=>`<div class="card kpi"><small>${t(k)}</small><b>${v}</b>${k==='profit'&&T.p===null&&recs.length?`<small>${t('nocost')}</small>`:''}</div>`).join('');
+$('top').innerHTML=A.length?A.slice(0,6).map(x=>`<div><div class="row" style="justify-content:space-between"><b>${esc(x.product)}</b><span>${money(x.rev)}</span></div><div class="bar"><i style="width:${x.rev/A[0].rev*100}%"></i></div></div>`).join(''):empty();
+$('perf').innerHTML=A.length?tbl(['product','units','rev','profit'],A.slice(0,8).map(x=>`<tr><td>${esc(x.product)}</td><td>${num(x.qty)}</td><td>${money(x.rev)}</td><td>${x.profit===null?'—':money(x.profit)}</td></tr>`)):empty();
+let I=[];if(A.length){I.push(`<b>${t('i_t',esc(A[0].product))}</b><span>${t('i_t2',money(A[0].rev))}</span>`);I.push(T.m===null?`<b>${t('i_n')}</b><span>${t('i_n2')}</span>`:`<b>${t('i_m',T.m.toFixed(1))}</b><span>${t('i_m2')}</span>`);lowList().filter(x=>x.s<=set.thr).slice(0,3).forEach(x=>I.push(`<b>${t('i_l',esc(x.p))}</b><span>${t('i_l2',x.s)}</span>`))}
+$('ins').innerHTML=I.length?I.map(x=>`<div class="ins">${x}</div>`).join(''):empty();
+let q=$('q').value.toLowerCase(),d=recs.filter(x=>[x.product,x.sku,x.category].join(' ').toLowerCase().includes(q));$('cnt').textContent=t('rows',Math.min(d.length,300),d.length);
+$('tbl').innerHTML=d.length?tbl(['date','product','sku','cat','qty','rev','cost'],d.slice(0,300).map(x=>`<tr><td>${esc(x.date||'—')}</td><td>${esc(x.product)}</td><td>${esc(x.sku||'—')}</td><td>${esc(x.category||'—')}</td><td>${num(x.qty)}</td><td>${money(x.sales)}</td><td>${x.cost===null?'—':money(x.cost)}</td></tr>`)):empty();
+$('ptbl').innerHTML=A.length?tbl(['product','units','rev','cost','profit','margin'],A.map(x=>`<tr><td><b>${esc(x.product)}</b></td><td>${num(x.qty)}</td><td>${money(x.rev)}</td><td>${x.ck?money(x.cost):'—'}</td><td>${x.profit===null?'—':money(x.profit)}</td><td>${x.profit===null?'—':(x.profit/x.rev*100).toFixed(1)+'%'}</td></tr>`)):empty();
+let S=lowList();$('stk').innerHTML=S.length?tbl(['product','stk','status'],S.map(x=>`<tr><td>${esc(x.p)}</td><td>${num(x.s)}</td><td><span class="badge ${x.s<=set.thr?'w':''}">${t(x.s<=set.thr?'low':'ok')}</span></td></tr>`)):`<div class="empty">${t('nostock')}</div>`;
+$('hist').innerHTML=imps.length?tbl(['file','rowsh','date'],imps.slice().reverse().map(x=>`<tr><td>${esc(x.name)}</td><td>${x.rows}</td><td>${esc(x.at)}</td></tr>`)):empty();
+if(page==='dash')chart(dates(r))}
+function dates(r){let m={};r.forEach(x=>{let k=x.date||'—';m[k]=(m[k]||0)+x.sales});return Object.entries(m).sort((a,b)=>a[0].localeCompare(b[0]))}
+let pts=[];
+function chart(data){let cv=$('cv'),b=cv.getBoundingClientRect(),dpr=devicePixelRatio||1,w=b.width||300,h=b.height||250;cv.width=w*dpr;cv.height=h*dpr;let c=cv.getContext('2d');c.scale(dpr,dpr);let st=getComputedStyle(document.documentElement),mut=st.getPropertyValue('--mut'),line=st.getPropertyValue('--line'),pri=st.getPropertyValue('--pri').trim();
+c.font='11px system-ui';c.fillStyle=mut;c.strokeStyle=line;for(let i=0;i<5;i++){let y=15+i*(h-50)/4;c.beginPath();c.moveTo(10,y);c.lineTo(w-10,y);c.stroke()}
+pts=[];if(!data.length){c.fillText(t('nodata'),14,h/2);return}
+let mx=Math.max(...data.map(x=>x[1]),1),L0=14,R=w-14;data.forEach((x,i)=>pts.push({x:L0+i*(R-L0)/Math.max(data.length-1,1),y:15+(h-50)*(1-x[1]/mx),l:x[0],v:x[1]}));
+let g=c.createLinearGradient(0,0,0,h);g.addColorStop(0,pri+'55');g.addColorStop(1,pri+'00');c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.lineTo(pts.at(-1).x,h-35);c.lineTo(pts[0].x,h-35);c.fillStyle=g;c.fill();
+c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.strokeStyle=pri;c.lineWidth=3;c.stroke();
+pts.forEach((p,i)=>{c.fillStyle=pri;c.beginPath();c.arc(p.x,p.y,3.5,0,7);c.fill();if(i%Math.ceil(pts.length/6)===0){c.fillStyle=mut;c.fillText(String(p.l).slice(5),p.x-12,h-12)}})}
+$('cv').addEventListener('pointermove',e=>{if(!pts.length)return;let b=e.target.getBoundingClientRect(),x=e.clientX-b.left,p=pts.reduce((a,q)=>Math.abs(q.x-x)<Math.abs(a.x-x)?q:a);let tp=$('tip');tp.style.display='block';tp.textContent=p.l+' · '+money(p.v);tp.style.left=Math.min(Math.max(p.x-40,0),b.width-110)+'px';tp.style.top=Math.max(p.y-34,0)+'px'});
+$('cv').addEventListener('pointerleave',()=>$('tip').style.display='none');
+
+function parseCSV(s,d=','){let R=[],r=[],c='',q=false;for(let i=0;i<s.length;i++){let ch=s[i],n=s[i+1];if(ch==='"'){if(q&&n==='"'){c+='"';i++}else q=!q}else if(ch===d&&!q){r.push(c);c=''}else if((ch==='\n'||ch==='\r')&&!q){if(ch==='\r'&&n==='\n')i++;r.push(c);c='';if(r.some(v=>v.trim()))R.push(r);r=[]}else c+=ch}r.push(c);if(r.some(v=>v.trim()))R.push(r);return R}
+async function readRows(f){let ext=(f.name.split('.').pop()||'').toLowerCase();
+if(/^(pdf|png|jpe?g|gif|webp|heic|docx?|pptx?|zip|rar)$/.test(ext))throw new Error(t('badfile'));
+if(/^(xlsx|xlsm|xlsb|xls|ods)$/.test(ext)){if(typeof XLSX==='undefined')throw new Error(t('noxlsx'));let wb=XLSX.read(await f.arrayBuffer(),{type:'array',cellDates:true}),best=[];wb.SheetNames.forEach(n=>{let r=XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,raw:true,defval:''});if(r.length>best.length)best=r});return best}
+let s=await f.text();if(s.includes('\u0000'))throw new Error(t('badfile'));s=s.replace(/^\uFEFF/,'');let c=s.trimStart()[0];
+if(ext==='json'||c==='['||c==='{'){try{let j=JSON.parse(s);if(!Array.isArray(j))j=Object.values(j).find(Array.isArray)||[j];let ks=[...new Set(j.flatMap(o=>Object.keys(o||{})))];return[ks,...j.map(o=>ks.map(k=>o?.[k]??''))]}catch(e){if(ext==='json')throw new Error(t('badfile'))}}
+let l=s.split(/\r?\n/).find(x=>x.trim())||'',d=[',',';','\t','|'].map(x=>[x,l.split(x).length]).sort((a,b)=>b[1]-a[1])[0][0];return parseCSV(s,d)}
+function norm(r,cu){let g=k=>map[k]>=0?r[map[k]]:'',N=k=>{let n=toN(g(k));return Number.isFinite(n)?n:null},q=N('qty'),pr=N('price'),sl=N('sales'),c=N('cost'),st=N('stock'),nq=map.qty<0?1:(q??0);
+if(sl===null&&pr!==null)sl=pr*nq;if(c!==null&&cu)c*=nq;
+let o={date:toDate(g('date')),product:String(g('product')??'').trim(),sku:String(g('sku')??'').trim(),category:String(g('cat')??'').trim(),qty:nq,sales:sl===null?NaN:sl,cost:c,stock:st,err:[]};
+if(!o.product)o.err.push('product');if(!Number.isFinite(o.sales)||o.sales<0)o.err.push('sales');if(!Number.isFinite(o.qty)||o.qty<0)o.err.push('qty');return o}
+function buildPend(){let cu=map.cost>=0&&/price|unit|rate/.test(CLEAN(raw.hdr[map.cost]));pend=raw.data.filter(r=>r.some(c=>String(c??'').trim()!=='')).map(r=>norm(r,cu))}
+function setMap(k,v){map[k]=+v;buildPend();renderPrev()}
+function renderPrev(){let P=$('prev');if(!raw){P.innerHTML='';return}
+let ok=pend.filter(x=>!x.err.length).length,o=i=>raw.hdr.map((h,j)=>`<option value="${j}"${j===i?' selected':''}>${esc(h||'#'+(j+1))}</option>`).join(''),
+sel=MF.map(([k,l])=>`<label style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:130px;font-size:12px;color:var(--mut)">${t(l)}<select class="sel" onchange="setMap('${k}',this.value)"><option value="-1">${t('none')}</option>${o(map[k])}</select></label>`).join(''),
+warn=map.product<0||(map.sales<0&&map.price<0);
+P.innerHTML=`<div class="ins"><b>${esc(raw.name)} · ${t('rowsin',pend.length)}</b></div><h3 style="margin:14px 0 8px">${t('map')}</h3><div class="row">${sel}</div>`+(warn?`<div class="ins"><b>${t('mapwarn')}</b></div>`:`<div class="ins"><b>${ok} ${t('valid')} · ${pend.length-ok} ${t('invalid')}</b></div>`)+tbl(['product','qty','rev','status'],pend.slice(0,15).map(x=>`<tr><td>${esc(x.product)}</td><td>${num(x.qty)}</td><td>${Number.isFinite(x.sales)?money(x.sales):'—'}</td><td><span class="badge ${x.err.length?'b':''}">${x.err.length?esc(x.err.join(', ')):t('valid')}</span></td></tr>`))+`<div class="row" style="margin-top:12px"><button class="btn p" ${ok?'':'disabled'} onclick="commit()">${t('confirm')} (${ok})</button><button class="btn" onclick="raw=null;renderPrev()">${t('cancel')}</button></div>`}
+async function readFile(f){if(!f)return;if(f.size>2e7){toast('Max 20 MB');return}
+try{let rows=(await readRows(f)).filter(r=>r.some(c=>String(c??'').trim()!==''));if(rows.length<2){toast(t('nodata'));return}
+let hi=0,best=-1;rows.slice(0,15).forEach((r,i)=>{let c=detect(r).n;if(c>best){best=c;hi=i}});
+let hdr=rows[hi].map(x=>String(x??'').replace(/^\uFEFF/,'').trim());map=detect(hdr);raw={name:f.name,hdr,data:rows.slice(hi+1)};buildPend();renderPrev()}
+catch(e){toast(e.message||t('badfile'))}finally{$('csv').value=''}}
+function commit(){let g=pend.filter(x=>!x.err.length).map(({err,...r})=>r);if(!g.length)return;recs.push(...g);imps.push({name:raw.name,rows:g.length,at:new Date().toLocaleString()});let ok=save();raw=null;$('prev').innerHTML='';toast(ok?t('done',g.length):t('nosave'));go('dash');draw()}
+function save(){return ls.s('recs',recs)&&ls.s('imps',imps)}
+function loadSample(){let P=[['Classic Shirt','SH-101','Shirts',12,899,520,18],['Denim Jeans','JN-202','Jeans',8,1499,850,9],['Cotton T-Shirt','TS-303','T-Shirts',20,499,250,28],['Kurti','KU-404','Ethnic',10,799,420,7],['Hoodie','HD-505','Winterwear',6,1299,720,5],['Formal Trouser','TR-606','Trousers',7,1099,610,11]],o=[];for(let d=1;d<=12;d++)P.forEach((p,i)=>{let q=Math.max(1,p[3]+((d+i)%4)-2);o.push({date:`2026-11-${String(d).padStart(2,'0')}`,product:p[0],sku:p[1],category:p[2],qty:q,sales:q*p[4],cost:q*p[5],stock:Math.max(0,p[6]-d+(i%3))})});recs=o;imps=[{name:'sample_apparel_data.csv',rows:o.length,at:new Date().toLocaleString()}];save();toast('✓');go('dash');draw()}
+function dlFile(txt,name){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/csv'}));a.download=name;a.click()}
+function dlSample(){let l=['transaction_date,product_name,sku,category,quantity,unit_price,sales_amount,cost_amount,stock_on_hand'];for(let i=0;i<10;i++)l.push(`2026-11-${String(i+1).padStart(2,'0')},Cotton T-Shirt,TS-303,T-Shirts,${10+i},499,${(10+i)*499},${(10+i)*250},${30-i}`);dlFile(l.join('\n'),'sample.csv')}
+function exportCSV(){let l=['date,product,sku,category,qty,sales,cost,stock'];recs.forEach(x=>l.push([x.date,x.product,x.sku,x.category,x.qty,x.sales,x.cost??'',x.stock??''].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')));dlFile(l.join('\n'),'sme_data.csv')}
+function ask(){let q=$('qi').value.trim();if(!q)return;let m=$('msgs'),A=agg(recs),T=totals(recs),a;
+if(!recs.length)a=t('nodata');
+else if(/worst|least|lowest|weak|सबसे कम|सर्वात कमी|সবচেয়ে কম/i.test(q))a=t('a_worst',A[A.length-1].product,money(A[A.length-1].rev));
+else if(/stock|low|स्टॉक|साठा|স্টক/i.test(q)){let l=lowList().filter(x=>x.s<=set.thr);a=l.length?t('a_l',l.map(x=>x.p+' ('+x.s+')').join(', ')):t('a_n')}
+else if(/profit|margin|मुनाफ|नफा|লাভ|मार्जिन|মার্জিন/i.test(q))a=T.p===null?t('a_np'):t('a_p',money(T.p),T.m.toFixed(1));
+else if(/categor|कैटेगरी|कॅटेगरी|ক্যাটেগরি/i.test(q)){let C={};recs.forEach(x=>{if(x.category)C[x.category]=(C[x.category]||0)+x.sales});let c=Object.entries(C).sort((a,b)=>b[1]-a[1])[0];a=c?t('a_cat',c[0],money(c[1])):t('a_nocat')}
+else if(/unit|sold|यूनिट|युनिट|बिके|विकले|বিক্রি|ইউনিট/i.test(q))a=t('a_u',num(T.u));
+else if(/total|overall|कुल|एकूण|মোট/i.test(q)&&/revenue|sales|कमाई|उत्पन्न|আয়|बिक्री|विक्री/i.test(q))a=t('a_rev',money(T.rev),num(T.u));
+else if(/top|most|highest|best|revenue|सबसे|टॉप|सर्वाधिक|जास्त|সবচেয়ে|সেরা/i.test(q))a=t('a_top',A[0].product,money(A[0].rev));else a=t('a_d');
+m.innerHTML+=`<div class="m me">${esc(q)}</div><div class="m">${esc(a)}</div>`;$('qi').value='';m.scrollTop=m.scrollHeight}
+function saveSet(){set={biz:$('biz').value||'My Store',thr:Number($('thr').value)||0};ls.s('set',set);toast(t('saved'));draw()}
+function clearAll(){if(confirm(t('clearq'))){recs=[];imps=[];save();draw()}}
+function toast(s){let e=$('toast');e.textContent=s;e.style.display='block';clearTimeout(window._t);window._t=setTimeout(()=>e.style.display='none',2200)}
+
+$('lang').onchange=e=>{lang=e.target.value;ls.s('lang',lang);applyLang()};
+$('themeBtn').onclick=()=>{let dark=document.documentElement.dataset.theme==='dark'||(!theme&&matchMedia('(prefers-color-scheme:dark)').matches);setTheme(dark?'light':'dark');draw()};
+$('menu').onclick=()=>$('side').classList.toggle('open');
+$('csv').onchange=e=>readFile(e.target.files[0]);$('q').oninput=draw;$('range').onchange=draw;$('qi').onkeydown=e=>{if(e.key==='Enter')ask()};
+['dragover','dragleave','drop'].forEach(ev=>$('drop').addEventListener(ev,e=>{e.preventDefault();$('drop').classList.toggle('dg',ev==='dragover');if(ev==='drop')readFile(e.dataTransfer.files[0])}));
+addEventListener('hashchange',route);addEventListener('resize',()=>page==='dash'&&draw());
+if(theme)setTheme(theme);applyLang();route();
+</script>
+</body>
+</html>
